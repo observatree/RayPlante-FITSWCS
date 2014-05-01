@@ -1,0 +1,26 @@
+Status of the FITSWCS package
+=============================
+
+Origins
+-------
+
+This library was first developed by Raymond Plante in 1996 as part of
+Project Horizon, a NASA cooperative agreement.  Version 2.4 was
+released in 1996 under GPLv2 and made available to developers via the
+NASA FITS Support Office (http://fits.gsfc.nasa.gov/).  This version was
+compatible with Java 1.0.  
+
+Development was discontinued after version 2.4.  In 2014, version 2.4
+was uploaded to a GitHub repository (https://github.com/RayPlante/FITSWCS).
+Developers welcome to submit issues and pull requests.
+
+Current Status
+--------------
+
+Work is now underway to assess the overall state of the code,
+including compliance with modern JVMs, compliance with current
+versions of the FITS WCS standard, and any remaining bugs.  A modern
+build and test system will be added.  
+
+There is currently no schedule for this work.  
+

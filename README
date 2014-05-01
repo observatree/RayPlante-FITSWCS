@@ -6,15 +6,26 @@ FITSWCS - an implementation of the FITS WCS proposal in Java
 See "COPYRIGHT NOTICE" below for information about use, redistribution
 and modifications.
 
+SUMMARY
+
+The FITSWCS package provides a Java library that implements the
+International Astronomical Union (IAU) endorsed standard for
+describing World Coordinate Systems (WCS) in FITS-formatted files.  
+The source code is available from GitHub
+(https://github.com/RayPlante/FITSWCS).  See STATUS for more
+information about the current status of the package.
+
 CONTENTS
 
     README       this file
+    STATUS       a summary of the status of this package
+    src		 directory containing the Java source code (*.java)
+
+Binary distributions also include:
     classes      directory containing the compiled Java class files
-		 (*.class) 
     javadoc      directory containing the documentation in HTML
 		 format; see javadoc/packages.html for overview of
 		 everything.
-    src		 directory containing the Java source code (*.java)
 
 ABOUT THIS PACKAGE
 
