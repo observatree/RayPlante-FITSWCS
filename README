@@ -1,0 +1,236 @@
+FITSWCS - an implementation of the FITS WCS proposal in Java
+   Copyright (C) 1995,1996 Mark Calabretta
+   Translated into Java(TM) from WCSLIB (C impl) 8/1996
+   by Raymond L. Plante, copyright (c) 1996
+
+See "COPYRIGHT NOTICE" below for information about use, redistribution
+and modifications.
+
+CONTENTS
+
+    README       this file
+    classes      directory containing the compiled Java class files
+		 (*.class) 
+    javadoc      directory containing the documentation in HTML
+		 format; see javadoc/packages.html for overview of
+		 everything.
+    src		 directory containing the Java source code (*.java)
+
+ABOUT THIS PACKAGE
+
+The FITSWCS package is a translation into Java of the WCSLIB C library
+(V2.3, updated to V2.4).  This original library was written in support
+for coordinate systems used by astronomical data stored in FITS
+format.  For more information on these coordinate systems, refer to
+the paper by Greisen and Calabretta at:
+
+    ftp://fits.cv.nrao.edu/fits/documents/wcs/wcs.all.ps.Z 
+
+The FITSWCS package provides classes for transforming world coordinate
+positions on a spherical surface to map positions and back again.
+There are three basic classes that carry out the three basic
+transformations: 
+
+   SphericalTransform - transformations that move the location of the
+		        sphere's pole.
+
+   Projection         - transformations that project the spherical
+			surface onto a flat map
+
+   LinearTransform    - transformations that adjust for rotations and
+		        skew in the map plane.
+
+CelestialTransform combines the functionality of SphericalTransform
+and Projection.  The FITSWCS.projections package provides 25 different
+implementations of the abstract Projection class.  FITSWCS.tests
+contains stand-alone java programs that test the closure on all the
+implemented classes.  The Acme.Fmt class is also provided (courtesy of
+Jef Poskanzer) for use by the programs in tests.  See the API
+documentation in ./javadoc for more details. 
+
+I tried to keep as much of the code a verbatim copy of the C version
+as possible, figuring that this would make it easier to track future
+updates to the C code.  I would characterize my inputs as primarily
+being the following:
+
+   o  organizing code into Java classes and interfaces:
+        +  structures were turned into classes
+	+  *set() functions became class constructors
+	+  *fwd() and *rev() became methods of the classes
+
+   o  moved comments around to be more in line with Java conventions
+      (and thus be processed properly by the Java document extracter,
+      javadoc)
+
+   o  altered data representations to be more in line with Java coding
+      style
+
+   o  error conditions handle through thrown exceptions, as is
+      the intention of Java programming language.
+
+Not everything in the C library was translated.  In particular, the
+test programs that call PGPLOT were not translated (though they could
+be in the future).  (The closure tests were translated.)  I also did
+not translate wcs.c, the grand wrapper code.  This was mainly because
+I am working on my own generalized classes for coordinates that can
+wrap around the WCS library when needed.  This work is part of Project
+Horizon (a NASA Cooperative Agreement with the University of Illinois)
+in cooperation with the NCSA Astronomy Digital Image Library.  My
+coordinate classes are near a beta release state.
+
+OBTAINING FITWCS
+
+The FITSWCS Java package may be obtained as part of the wcslib
+distribution (currently wcslib-2.4) which contains code for the WCS
+library in C, FORTRAN, and Java.  The latest version may be obtained
+from 
+
+       Australia:     ftp://ftp.atnf.csiro.au/pub/software/wcslib/
+       USA (mirror):  http://fits.cv.nrao.edu/src/wcs/
+
+The FITSWCS Java package may also be obtained by itself (without the C
+and FORTRAN versions) from
+
+       ftp://imagelib.ncsa.uiuc.edu/pub/java/FITSWCS
+
+Soon, it will also be distributed as part of Horizon Image Data
+Browser package, horizon.  For more information on this package,
+consult:
+
+       http://imagelib.ncsa.uiuc.edu/imagelib/Horizon
+
+INSTALLATION
+
+To use this package, untar the distribution tar file.  It is not
+necessary to "compile" anything (the *.class files are platform
+independent).  In the following discussion, it is assumed that the
+java directory from this distribution (containing the directories
+classes, javadoc, and src) is called $this.
+
+To use these classes, either set your CLASSPATH to include the
+$this/classes directory, e.g:
+
+   CLASSPATH=/usr/java/classes:/usr/java/lib/classes.zip:$this/classes
+
+or copy the contents of the classes directory to one of the standard
+locations for java class files.  The *.java files are not needed to
+use this package.  
+
+One day I may include a Makefile.
+
+RUNNING TEST PROGRAMS
+
+Assuming that one's CLASSPATH is properly set, one can run the test
+programs by referring to their fully specified (package and class)
+name.  For example, to test the LinearTransform class for closure, run
+the TestLin program by typing (usually): 
+
+   java FITSWCS.tests.TestLin
+
+TestSph will test the SphericalTransform for closure, and TestProj,
+for the Projection classes.  With no arguments, TestProj will step
+through each of the 25 projections in FITSWCS.projections.  To test a
+subset, one can specify them on the command line.  For example,
+
+   java FITSWCS.tests.TestLin sin stg csc
+
+will test only the SIN, STG, and CSC projections.  
+
+TECHNICAL DETAILS (adapted from wcslib-2.3/C/README)
+
+Nomenclature
+------------
+In WCSLIB the "forward" direction is from (lng,lat) celestial coordinates to
+(x,y) coordinates in the plane of projection.  This accords with the notion
+that spherical projections are a projection of the sphere onto a plane, the
+"reverse" direction is therefore that of deprojection from plane to sphere.
+
+Unfortunately, this is opposite to what is generally understood to be the
+forward direction for FITS, namely that of transforming pixel coordinates to
+world coordinates.  However, the ordering of function argument lists should
+make it clear what is intended.
+
+Verification
+------------
+The TestLin, TestProj, and TestSph programs test closure of the linear
+transformation routines, projection routines and spherical coordinate
+transformations.  "Closure" tests apply the forward and reverse
+transformations in sequence and compare the result with the original
+value.  Ideally, the result should agree exactly, but because of
+floating point rounding errors there is usually a small discrepancy so
+it is only required to agree within a "closure tolerance".
+
+TestProj tests for closure separately for longitude and latitude
+except at the poles where it only tests for closure in latitude.  Note
+that closure in longitude does not deal with angular displacements on
+the sky.  This is appropriate for many projections such as the
+cylindricals where circumpolar parallels are projected at the same
+length as the equator.  On the other hand, tsph does test for closure
+in angular displacement.
+
+The tolerance for reporting closure discrepancies is set at 1e-10
+degree for most projections; this is slightly less than 3 microarcsec.
+The worst case closure figure is reported for each projection and this
+is usually better than the reporting tolerance by several orders of
+magnitude.  tproj1 and tsph test closure at all points on the 1 degree
+grid of native longitude and latitude and to within 5 degrees of any
+latitude of divergence for those projections which cannot represent
+the full sphere.  Closure is also tested at a sequence of points close
+to the reference point (TestProj) or pole (TestSph).
+
+Note that the inverse of the COBE quad-qube projection (CSC) is a polynomial
+approximation and its closure tolerance is intrinsically poor.
+
+Although tests for closure help to verify the internal consistency of
+the routines they do not verify them in an absolute sense.  This is
+partly addressed by tproj2 and tcel from the C version of the library
+which plot test grids for visual inspection of scaling, orientation,
+and other macroscopic characteristics of the projections.  Perhaps one
+day these will get translated, too.
+
+Trigonometric functions
+-----------------------
+The FITSWCS classes use trigometric functions which take or return
+angular arguments in degrees.  These functions are bundled into the
+TrigD class as static methods.  They explicitly handle angles which
+are a multiple of 90 degrees returning an exact result.
+
+COPYRIGHT NOTICE
+
+FITSWCS - an implementation of the FITS WCS proposal.
+Copyright (C) 1995,1996 Mark Calabretta
+Translated into Java(TM) from WCSLIB (C impl) 8/1996
+by Raymond L. Plante, copyright (c) 1996
+
+This library is free software; you can redistribute it and/or modify it
+under the terms of the GNU Library General Public License as published
+by the Free Software Foundation; either version 2 of the License, or (at
+your option) any later version. 
+
+This library is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Library
+General Public License for more details. 
+
+You should have received a copy of the GNU Library General Public License
+along with this library; if not, write to the Free Software Foundation,
+Inc., 675 Mass Ave, Cambridge, MA 02139, USA. 
+
+Correspondence concerning WCSLIB may be directed to:
+   Internet email: mcalabre@atnf.csiro.au
+   Postal address: Dr. Mark Calabretta,
+                   Australia Telescope National Facility,
+                   P.O. Box 76,
+                   Epping, NSW, 2121,
+                   AUSTRALIA
+Correspondence concerning the Java implementation may be directed
+to Raymond L. Plante (rplante@ncsa.uiuc.edu).
+
+--------
+
+Raymond L. Plante
+National Center for Supercomputing Applications
+
+This work was supported in part by Project Horizon, a NASA Cooperative
+Agreement with the University of Illinois, Urbana-Champaign in
+cooperation with the NCSA Astronomy Digital Image Library.
