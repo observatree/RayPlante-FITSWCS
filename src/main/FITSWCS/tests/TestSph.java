@@ -12,7 +12,6 @@ package FITSWCS.tests;
 
 import FITSWCS.*;
 import FITSWCS.exceptions.*;
-import Acme.Fmt;
 
 /**
  *   This class verifies the SphericalTransform class for closure errors.<p>
@@ -84,16 +83,15 @@ public class TestSph {
 
 	System.out.println("\nCelestial longitude and latitude of the " +
 			   "native pole, and native");
-	System.out.println("longitude of the celestial pole (degrees): " +
-			   Fmt.fmt(eul[0],10,4,Fmt.LJ) + 
-			   Fmt.fmt(eul[1],10,4,Fmt.LJ) + 
-			   Fmt.fmt(eul[2],10,4,Fmt.LJ));
+	System.out.print("longitude of the celestial pole (degrees): ");
+        System.out.format("%-10.4f", eul[0])
+                  .format("%-10.4f", eul[1])
+                  .format("%-10.4f", eul[2]).println();
 
 	eul[3] = Math.cos(eul[1] * DEGTORAD);
 	eul[4] = Math.sin(eul[1] * DEGTORAD);
 
-	System.out.println("Closure tolerance: " + Fmt.fmt(tol,8,1,Fmt.LJ) +
-			   "degrees of arc.\n");
+	System.out.format("Closure tolerance: %-7.1e degrees of arc.\n\n", tol);
 
 	for (lat = 90; lat >= -90; lat--) {
 	    lat1 = lat;
@@ -112,16 +110,12 @@ public class TestSph {
 		if (Math.abs(lat2-lat1) > tol || 
 		    (Math.abs(lng2-lng1)-360.0)*coslat > tol) {
 
-		    System.out.println("Unclosed: lng1 = " + 
-				       Fmt.fmt(lng1,20,15,Fmt.LJ) +
-				       "lat1 = " + Fmt.fmt(lat1,20,15,Fmt.LJ));
-		    System.out.println("           phi =" + 
-				       Fmt.fmt(phi,20,15,Fmt.LJ) +
-				       "theta = " +
-				       Fmt.fmt(theta,20,15,Fmt.LJ));
-		    System.out.println("          lng2 =" + 
-				       Fmt.fmt(lng2,20,15,Fmt.LJ) +
-				       "lat2 = " + Fmt.fmt(lat2,20,15,Fmt.LJ));
+                System.out.printf("Unclosed: lng1 = %-20.15f  lat1 = %-20.15f",
+                                  lng1, lat1).println();
+                System.out.printf("           phi = %-20.15f theta = %-20.15f",
+                                  phi, theta).println();
+                System.out.printf("          lng2 = %-20.15f  lat2 = %-20.15f",
+                                  lng2, lat2).println();
 		}
 	    }
 	}
@@ -145,16 +139,12 @@ public class TestSph {
 		if (Math.abs(lat2-lat1) > tol || 
 		    (Math.abs(lng2-lng1)-360.0)*coslat > tol) {
 		
-		    System.out.println("Unclosed: lng1 = " + 
-				       Fmt.fmt(lng1,20,15,Fmt.LJ) +
-				       "lat1 = " + Fmt.fmt(lat1,20,15,Fmt.LJ));
-		    System.out.println("           phi =" + 
-				       Fmt.fmt(phi,20,15,Fmt.LJ) +
-				       "theta = " +
-				       Fmt.fmt(theta,20,15,Fmt.LJ));
-		    System.out.println("          lng2 =" + 
-				       Fmt.fmt(lng2,20,15,Fmt.LJ) +
-				       "lat2 = " + Fmt.fmt(lat2,20,15,Fmt.LJ));
+                System.out.printf("Unclosed: lng1 = %-20.15f  lat1 = %-20.15f",
+                                  lng1, lat1).println();
+                System.out.printf("           phi = %-20.15f theta = %-20.15f",
+                                  phi, theta).println();
+                System.out.printf("          lng2 = %-20.15f  lat2 = %-20.15f",
+                                  lng2, lat2).println();
 		}
 
 		zeta /= 10.0;

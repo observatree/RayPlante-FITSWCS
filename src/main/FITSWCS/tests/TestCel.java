@@ -13,7 +13,6 @@ package FITSWCS.tests;
 import FITSWCS.*;
 import FITSWCS.exceptions.*;
 import java.util.BitSet;
-import Acme.Fmt;
 
 /**
  *   This class verifies the CelestialTransform class for closure errors.<p>
@@ -395,9 +394,9 @@ public class TestCel {
 	Projection prj = cel.getProjection();
 	double ux, uy;
 
-	System.out.println("Testing " + pcode + " native latitudes " + north +
-			   " to " + south + ", closure tolerance " + 
-			   Fmt.fmt(tol, 8, 1) + " deg.");
+	System.out.printf("Testing %s native latitudes %d to %d, ",
+                          pcode, north, south)
+                  .printf("closure tolerance %8.1e deg.\n", tol);
 
 	drmax = 0.0;
 
@@ -411,10 +410,8 @@ public class TestCel {
 		    out = prj.fwd(lng1, lat1);
 		}
 		catch (PixelBeyondProjectionException ex) {
-		    System.out.println("Error: lng1 =" + 
-				       Fmt.fmt(lng1, 20, 15) +
-				       "  lat =" + 
-				       Fmt.fmt(lat1, 20, 15));
+		    System.out.printf("Error: lng1 = %20.15f  lat = %20.15f\n",
+                                       lng1, lat1);
 		    System.out.println("       " + ex.getMessage());
 		    continue;
 		}
@@ -425,14 +422,10 @@ public class TestCel {
 		    out = cel.rev(x1, y1);
 		}
 		catch (InvalidCelestialTransformException ex) {
-		    System.out.println("Error: lng1 =" + 
-				       Fmt.fmt(lng1, 20, 15) +
-				       "  lat =" + 
-				       Fmt.fmt(lat1, 20, 15));
-		    System.out.println("       x =" + 
-				       Fmt.fmt(x1, 20, 15) +
-				       "  y =" + 
-				       Fmt.fmt(y1, 20, 15));
+		    System.out.printf("Error: lng1 = %20.15f  lat1 = %20.15f\n",
+                                      lng1, lat1);
+		    System.out.printf("          x = %20.15f     y = %20.15f\n",
+                                      x1, y1);
 		    System.out.println("       " + ex.getMessage());
 		    continue;
 		}
@@ -443,18 +436,12 @@ public class TestCel {
 		    out = cel.fwd(lng2, lat2);
 		}
 		catch (InvalidCelestialTransformException ex) {
-		    System.out.println("Error: lng =" + 
-				       Fmt.fmt(lng1, 20, 15) +
-				       "  lat =" + 
-				       Fmt.fmt(lat1, 20, 15));
-		    System.out.println("       x =" + 
-				       Fmt.fmt(x1, 20, 15) +
-				       "  y =" + 
-				       Fmt.fmt(y1, 20, 15));
-		    System.out.println("Error: lng2 =" + 
-				       Fmt.fmt(lng2, 20, 15) +
-				       "  lat2 =" + 
-				       Fmt.fmt(lat2, 20, 15));
+		    System.out.printf("Error: lng1 = %20.15f  lat1 = %20.15f\n",
+                                      lng1, lat1);
+		    System.out.printf("         x1 = %20.15f    y1 = %20.15f\n",
+                                      x1, y1);
+		    System.out.printf("Error: lng2 = %20.15f  lat2 = %20.15f\n",
+                                      lng2, lat2);
 		    System.out.println("       " + ex.getMessage());
 		    continue;
 		}
@@ -464,29 +451,19 @@ public class TestCel {
 		dr = Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
 		if (dr > drmax) drmax = dr;
 		if (dr > tol) {
-		    System.out.println("  lng =" + 
-				       Fmt.fmt(lng1, 20, 15) +
-				       "  lat =" + 
-				       Fmt.fmt(lat1, 20, 15));
-		    System.out.println("  " + pcode + ": x1 =" +
-				       Fmt.fmt(x1, 20, 15) +
-				       "  y1 =" + 
-				       Fmt.fmt(y1, 20, 15));
-		    System.out.println("     : lng2 =" +
-				       Fmt.fmt(lng2, 20, 15) +
-				       "  lat2 =" + 
-				       Fmt.fmt(lat2, 20, 15));
-		    System.out.println("     : x2 =" +
-				       Fmt.fmt(x2, 20, 15) +
-				       "  y2 =" + 
-				       Fmt.fmt(y2, 20, 15));
+		    System.out.printf("  lng = %20.15f  lat = %20.15f\n",
+                                      lng1, lat1);
+		    System.out.printf("  %s:    x1 = %20.15f    y1 = %20.15f\n",
+                                      pcode, x1, y1);
+		    System.out.printf("     : lng2 = %20.15f  lat2 = %20.15f\n",
+                                      lng2, lat2);
+		    System.out.printf("     :   x2 = %20.15f    y2 = %20.15f\n",
+                                      x2, y2);
 		}
 	    }
 	}
 
-	System.out.println("  Maximum residual (map): dR: " + 
-			   Fmt.fmt(drmax, 10, 31));
-
+	System.out.printf("  Maximum residual (map): dR: %12.6e\n", drmax);
     }
 
     protected static final int nprojs = 26;

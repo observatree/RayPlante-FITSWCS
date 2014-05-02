@@ -12,7 +12,8 @@ package FITSWCS.tests;
 
 import FITSWCS.*;
 import FITSWCS.exceptions.*;
-import Acme.Fmt;
+
+import java.util.Formatter;
 
 /**
  *   This class verifies the LinearTransform class for closure errors.<p>
@@ -73,6 +74,7 @@ public class TestLin {
 
 	int j;
 	StringBuffer out;
+        Formatter fmtr;
 	LinearTransform lin;
 
 	try {
@@ -87,16 +89,18 @@ public class TestLin {
 			   "-----------------------");
 
 	out = new StringBuffer("pix:");
+        fmtr = new Formatter(out);
 	for (j=0; j < 5; j++) {
-	    out.append(Fmt.fmt(pix[j], 14, 8));
+	    fmtr.format("%14.8f", pix[j]);
 	}
 	System.out.println(out);
 
 	img = lin.rev(pix);
 	out = new StringBuffer("img:");
+        fmtr = new Formatter(out);
 	try {
 	    for (j=0; j < 5; j++) {
-		out.append(Fmt.fmt(img[j], 14, 8));
+                fmtr.format("%14.8f", img[j]);
 	    }
 	} catch (ArrayIndexOutOfBoundsException ex) {
 	    System.out.println("Missing elements in img");
@@ -105,9 +109,10 @@ public class TestLin {
 
 	pix = lin.fwd(img);
 	out = new StringBuffer("pix:");
+        fmtr = new Formatter(out);
 	try {
 	    for (j=0; j < 5; j++) {
-		out.append(Fmt.fmt(pix[j], 14, 8));
+                fmtr.format("%14.8f", pix[j]);
 	    }
 	} catch (ArrayIndexOutOfBoundsException ex) {
 	    System.out.println("Missing elements in pix");
@@ -116,9 +121,10 @@ public class TestLin {
 
 	img = lin.rev(pix);
 	out = new StringBuffer("img:");
+        fmtr = new Formatter(out);
 	try {
 	    for (j=0; j < 5; j++) {
-		out.append(Fmt.fmt(img[j], 14, 8));
+                fmtr.format("%14.8f", img[j]);
 	    }
 	} catch (ArrayIndexOutOfBoundsException ex) {
 	    System.out.println("Missing elements in img");
