@@ -57,6 +57,7 @@ public class Util
 
     /// Returns a date string formatted in Unix ls style - if it's within
     // six months of now, Mmm dd hh:ss, else Mmm dd  yyyy.
+    @SuppressWarnings("deprecation")
     public static String lsDateStr( Date date )
         {
         long dateTime = date.getTime();
@@ -386,6 +387,7 @@ public class Util
 	};
 
     /// Draw a broken-image image.
+    @SuppressWarnings("deprecation")
     public static void brokenImage( Graphics graphics, Component comp )
 	{
 	Image bimg = comp.createImage(

@@ -63,9 +63,9 @@
              classpathref="classpath.build"/>
   </target>
 
-  <target name="test" depends="test-closure,test-unit"/>
+  <target name="test" depends="test-unit"/>
 
-  <target name="test-closure" depends="compile">
+  <target name="TestCel" depends="compile">
     <java classpathref="classpath.test" 
           classname="FITSWCS.tests.TestCel">
     </java>
