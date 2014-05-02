@@ -94,9 +94,14 @@ public class TestCel {
 	} 
 	if (doproj.get(TAN)) {
 
-	    // TAN: gnomonic.
+	    // TAN: gnomonic.  
+            // Note: projection goes unstable far from reference position;
+            // Thus, we choose a ref. position near +90.  
+            double[] ref = new double[4];
+            System.arraycopy(r, 0, ref, 0, r.length);
+            ref[1] = 89.0;
 	    try {
-		cel = new CelestialTransform("TAN", r, p);
+		cel = new CelestialTransform("TAN", ref, p);
 		runTest(cel, 90, 5, tol);
 	    }
 	    catch (FITSWCSException ex) {
@@ -119,8 +124,13 @@ public class TestCel {
 	if (doproj.get(STG)) {
 
 	    // STG: stereographic.
+            // Note: projection goes unstable far from reference position;
+            // Thus, we choose a ref. position near +90.  
+            double[] ref = new double[4];
+            System.arraycopy(r, 0, ref, 0, r.length);
+            ref[1] = 89.0;
 	    try {
-		cel = new CelestialTransform("STG", r, p);
+		cel = new CelestialTransform("STG", ref, p);
 		runTest(cel, 90, -85, tol);
 	    }
 	    catch (FITSWCSException ex) {
@@ -173,9 +183,14 @@ public class TestCel {
 	if (doproj.get(AIR)) {
 	    
 	    // AIR: zenithal/azimuthal perspective.
+            // Note: projection goes unstable far from reference position;
+            // Thus, we choose a ref. position near +90.  
+            double[] ref = new double[4];
+            System.arraycopy(r, 0, ref, 0, r.length);
+            ref[1] = 89.0;
 	    p[1] = 45.0;
 	    try {
-		cel = new CelestialTransform("AIR", r, p);
+		cel = new CelestialTransform("AIR", ref, p);
 		runTest(cel, 90, -85, tol);
 	    }
 	    catch (FITSWCSException ex) {
@@ -189,7 +204,7 @@ public class TestCel {
 	    p[2] = 0.8;
 	    try {
 		cel = new CelestialTransform("CYP", r, p);
-		runTest(cel, 90, -89, tol);
+		runTest(cel, 90, -90, tol);
 	    }
 	    catch (FITSWCSException ex) {
 		System.out.println(ex.getMessage());
@@ -200,7 +215,7 @@ public class TestCel {
 	    // CAR: Cartesian. 
 	    try {
 		cel = new CelestialTransform("CAR", r, p);
-		runTest(cel, 90, -89, tol);
+		runTest(cel, 90, -90, tol);
 	    }
 	    catch (FITSWCSException ex) {
 		System.out.println(ex.getMessage());
@@ -232,23 +247,36 @@ public class TestCel {
 	if (doproj.get(COP)) {
 	    
 	    // COP: conic perspective.
+            // Note: projection goes unstable far from reference position;
+            // Thus, we choose a ref. position near +90.  
+            double[] ref = new double[4];
+            System.arraycopy(r, 0, ref, 0, r.length);
+            ref[1] = 89;
+
 	    p[1] = 60.0;
 	    p[2] = 15.0;
 	    try {
-		cel = new CelestialTransform("COP", r, p);
-		runTest(cel, 90, -25, tol);
+		cel = new CelestialTransform("COP", ref, p);
+		runTest(cel, 90, 0, tol);
 	    }
 	    catch (FITSWCSException ex) {
-		System.out.println(ex.getMessage());
+		System.out.println("Failed to test COP: "+ex.getMessage());
 	    }
 	}
 	if (doproj.get(COD)) {
 	    
 	    // COD: conic equidistant
+            // Note: projection goes unstable far from reference position
+            // and opposite reference longitude;
+            // Thus, we choose a ref. position near +90.  
+            double[] ref = new double[4];
+            System.arraycopy(r, 0, ref, 0, r.length);
+            ref[1] = 89.5;
+
 	    p[1] = -60.0;
 	    p[2] = 15.0;
 	    try {
-		cel = new CelestialTransform("COD", r, p);
+		cel = new CelestialTransform("COD", ref, p);
 		runTest(cel, 90, -89, tol);
 	    }
 	    catch (FITSWCSException ex) {
@@ -258,23 +286,36 @@ public class TestCel {
 	if (doproj.get(COE)) {
 	    
 	    // COE: conic equal area.
+            // Note: projection goes unstable near reference pole
+            // and opposite reference longitude;
+            // Thus, we choose a ref. position near +90.  
+            double[] ref = new double[4];
+            System.arraycopy(r, 0, ref, 0, r.length);
+            ref[1] = 89.5;
+
 	    p[1] = 60.0;
 	    p[2] = -15.0;
 	    try {
-		cel = new CelestialTransform("COE", r, p);
+		cel = new CelestialTransform("COE", ref, p);
 		runTest(cel, 90, -89, tol);
 	    }
 	    catch (FITSWCSException ex) {
-		System.out.println(ex.getMessage());
+		System.out.println("Failed to test COE: "+ex.getMessage());
 	    }
 	}
 	if (doproj.get(COO)) {
 	    
 	    // COO: conic orthomorphic.
+            // Note: projection goes unstable far from reference position;
+            // Thus, we choose a ref. position near +90.  
+            double[] ref = new double[4];
+            System.arraycopy(r, 0, ref, 0, r.length);
+            ref[1] = 89.5;
+
 	    p[1] = -60.0;
 	    p[2] = -15.0;
 	    try {
-		cel = new CelestialTransform("COO", r, p);
+		cel = new CelestialTransform("COO", ref, p);
 		runTest(cel, 85, -89, tol);
 	    }
 	    catch (FITSWCSException ex) {
@@ -296,9 +337,15 @@ public class TestCel {
 	if (doproj.get(PCO)) {
 
 	    // PCO: polyconic.
+            // Note: projection goes unstable near pole and the 
+            // reference longitude
+            double[] ref = new double[4];
+            System.arraycopy(r, 0, ref, 0, r.length);
+            ref[1] = 89.0;
+
 	    try {
-		cel = new CelestialTransform("PCO", r, p);
-		runTest(cel, 90, -89, tol);
+		cel = new CelestialTransform("PCO", ref, p);
+		runTest(cel, 88, -88, tol);
 	    }
 	    catch (FITSWCSException ex) {
 		System.out.println(ex.getMessage());
@@ -353,7 +400,7 @@ public class TestCel {
 	    // CSC: COBE quadrilateralized spherical cube.
 	    try {
 		cel = new CelestialTransform("QSC", r, p);
-		runTest(cel, 90, -89, 4.0e-2);
+		runTest(cel, 90, -89, tol);
 	    }
 	    catch (FITSWCSException ex) {
 		System.out.println(ex.getMessage());
@@ -407,11 +454,11 @@ public class TestCel {
 		lng1 = (double)lng;
 
 		try {
-		    out = prj.fwd(lng1, lat1);
+		    out = cel.fwd(lng1, lat1);
 		}
-		catch (PixelBeyondProjectionException ex) {
-		    System.out.printf("Error: lng1 = %20.15f  lat = %20.15f\n",
-                                       lng1, lat1);
+		catch (InvalidCelestialTransformException ex) {
+		    System.out.printf("Error: lng1 = %20.15f  lat1 = %20.15f\n",
+                                      lng1, lat1);
 		    System.out.println("       " + ex.getMessage());
 		    continue;
 		}
