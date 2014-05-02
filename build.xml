@@ -11,7 +11,7 @@
 
   <path id="classpath.build">
     <pathelement location="${dir.build.classes}" />
-    <path refid="local.jar.path"/>
+    <!-- <path refid="local.jar.path"/>  -->
   </path>
   <path id="classpath.test">
     <pathelement location="${dir.test.classes}" />
@@ -25,10 +25,11 @@
   <target name="init-tests" depends="init,lo.initTestDirs">
   </target>
 
-  <target name="build" depends="jar"/>
+  <target name="build" depends="jar,doc"/>
 
   <target name="compile" depends="init">
     <javac srcdir="${dir.src}" destdir="${dir.build.classes}" 
+           excludes="FITSWCS/devlp/**/*.java" 
            debug="${debug}" classpathref="classpath.build" deprecation="on"
            optimize="off" source="1.5" includeantruntime="false"/>
     <copy todir="${dir.build.classes}">
@@ -56,7 +57,8 @@
   <target name="doc" depends="api"/>
 
   <target name="api" depends="init">
-    <javadoc sourcepath="${dir.src}" destdir="${dir.doc}/api"
+    <javadoc sourcepath="${dir.src}" destdir="${dir.doc}/japi"
+             excludepackagenames="FITSWCS.devlp" 
              author="true" version="true" use="true"
              classpathref="classpath.build"/>
   </target>
@@ -96,6 +98,18 @@
        <sysproperty key="test.tmpdir" value="${dir.tmp}"/>
        <sysproperty key="test.outdir" value="${dir.test.data}"/>
     </junit>
+  </target>
+
+  <target name="clean" depends="lo.cleanOutputDirs">
+  </target>
+
+  <target name="clean-target">
+    <delete file="${target.jar.path}"/>
+  </target>
+
+  <target name="distclean" depends="clean-target,lo.distCleanOutputDirs">
+    <delete dir="${dir.lib}"/>
+    <delete dir="${dir.doc}"/>
   </target>
 
   <target name="show-build-cp">

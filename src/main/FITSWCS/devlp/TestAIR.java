@@ -1,4 +1,4 @@
-package FITSWCS;
+package FITSWCS.devlp;
 
 import java.util.BitSet;
 import Acme.Fmt;
