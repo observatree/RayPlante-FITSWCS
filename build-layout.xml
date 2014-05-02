@@ -32,10 +32,10 @@
     </target>
 
     <target name="initTestDirs">
-      <mkdir dir="${dir.test.tclasses}"/>
+      <mkdir dir="${dir.test.classes}"/>
       <mkdir dir="${dir.testreport}"/>
       <mkdir dir="${dir.tmp}"/>
-      <mkdir dir="${dir.test.tdata}"/>
+      <mkdir dir="${dir.test.data}"/>
     </target>
 
     <target name="cleanOutputDirs">
