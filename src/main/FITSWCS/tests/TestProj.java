@@ -14,7 +14,6 @@ import FITSWCS.*;
 import FITSWCS.exceptions.*;
 import FITSWCS.projections.*;
 import java.util.BitSet;
-import Acme.Fmt;
 
 /**
  *   This class verifies the Projection class for closure errors.<p>
@@ -416,9 +415,8 @@ public class TestProj {
 	    }
 	}
 
-	System.out.println("  Maximum residual (sky): lng: " + 
-			   Fmt.fmt(dlngmx, 20, 15) + "   lat: " +
-			   Fmt.fmt(dlatmx, 20, 15));
+	System.out.printf("  Maximum residual (sky): lng: %12.6e  lat: %126e\n",
+                          dlngmx, dlatmx);
 
 	// Test closure at a point close to the reference point. 
 	r = 10.0;
